@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
-import 'package:flutter_application_1/users/view/category_slide.dart';
-import 'package:flutter_application_1/users/view/custom_drawer.dart';
+import 'package:flutter_application_1/view/users/category_slide.dart';
+import 'package:flutter_application_1/view/users/custom_pages/custom_drawer.dart';
+import 'package:flutter_application_1/view/users/question_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -133,7 +134,8 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                     onTap: () {
                       //
-                      context.go('/questions');
+                      // context.go('/questions');
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionPage(jobId: ),))
                     },
                     child: Card(
                       color: Colors.white,

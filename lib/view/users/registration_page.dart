@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
-import 'package:flutter_application_1/users/view/custom_text_field.dart';
+import 'package:flutter_application_1/view/users/custom_pages/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -190,7 +190,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           child: Text(
                             "Sign Up",
-                            style: TextStyles.h4
+                            style: TextStyles.h6
                                 .copyWith(color: ColorConstants.primaryColor),
                           ),
                         ),

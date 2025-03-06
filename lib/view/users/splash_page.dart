@@ -13,9 +13,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   Future<void> _checkLoginStatus() async {
-    // print("1-----");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print("2");
 
     String? email = prefs.getString("email");
     String? password = prefs.getString("password");

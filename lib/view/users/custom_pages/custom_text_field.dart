@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyles.h6.copyWith(color: Colors.white),
+          style: TextStyles.normalText.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 10),
         TextField(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/users/view/add_questions.dart';
-import 'package:flutter_application_1/users/view/bottomNavBar.dart';
-import 'package:flutter_application_1/users/view/home/home_page.dart';
-import 'package:flutter_application_1/users/view/profile/profile_page.dart';
+import 'package:flutter_application_1/view/users/custom_pages/bottomNavBar.dart';
+import 'package:flutter_application_1/view/users/home_page.dart';
+import 'package:flutter_application_1/view/users/profile_page.dart';
 
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
@@ -16,7 +15,7 @@ class _NavPageState extends State<NavPage> {
 
   final List<Widget> pages = [
     HomePage(),
-    AddQuestions(),
+    // AddQuestions(),
     ProfilePage(),
   ];
 

@@ -23,9 +23,9 @@ class BottomNavBar extends StatelessWidget {
         TabItem(
           icon: Icons.home,
         ),
-        TabItem(
-          icon: Icons.add,
-        ),
+        // TabItem(
+        //   icon: Icons.add,
+        // ),
         TabItem(
           icon: Icons.person,
         ),
