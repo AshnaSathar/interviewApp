@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/question_controller/job_fields_controller.dart';
 import 'package:flutter_application_1/controller/question_controller/question_controller.dart';
 import 'package:flutter_application_1/view/admin/dashboard.dart';
 import 'package:flutter_application_1/view/users/full_category_page.dart';
@@ -35,6 +36,9 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => QuestionController()),
+    ChangeNotifierProvider(create: (context) => JobFieldController()),
+
+    // JobFieldController
   ], child: MyApp()));
 }
 

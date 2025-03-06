@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/view/users/custom_pages/custom_text_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+class RoleConstants {
+  static const String user = "user";
+}
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -18,37 +23,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
-
-  // Future<void> _registerUser() async {
-  //   String name = nameController.text.trim();
-  //   String email = emailController.text.trim();
-  //   String password = passwordController.text.trim();
-  //   String confirmPassword = confirmPassController.text.trim();
-
-  //   if (name.isEmpty ||
-  //       email.isEmpty ||
-  //       password.isEmpty ||
-  //       confirmPassword.isEmpty) {
-  //     _showSnackBar("All fields are required!");
-  //     return;
-  //   }
-
-  //   if (password != confirmPassword) {
-  //     _showSnackBar("Passwords do not match!");
-  //     return;
-  //   }
-
-  //   // Save user data to SharedPreferences
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString("userName", name);
-  //   await prefs.setString("userEmail", email);
-  //   await prefs.setBool("isLoggedIn", true);
-
-  //   _showSnackBar("Registration Successful!");
-
-  //   // Navigate to Home Screen
-  //   context.push('/');
-  // }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -86,9 +60,34 @@ class _RegistrationPageState extends State<RegistrationPage> {
         password: password,
       );
 
+      String userId = userCredential.user?.uid ?? "";
+
+      // Save user details to 'users' collection
+      await FirebaseFirestore.instance
+          .collection('user_roles')
+          .doc(userId)
+          .set({
+        'name': name,
+        'email': email,
+        'role': RoleConstants.user,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // Save role mapping to 'user_roles' collection
+      await FirebaseFirestore.instance
+          .collection('user_roles')
+          .doc(userId)
+          .set({
+        'userId': userId,
+        'email': email,
+        'role': RoleConstants.user,
+        'assignedAt': FieldValue.serverTimestamp(),
+      });
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("userName", name);
       await prefs.setString("userEmail", email);
+      await prefs.setString("userRole", RoleConstants.user);
       await prefs.setBool("isLoggedIn", true);
 
       _showSnackBar("Registration Successful!");
@@ -120,21 +119,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
             height: height,
             width: width,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    transform: GradientRotation(1.5),
-                    colors: [
+              gradient: LinearGradient(
+                transform: GradientRotation(1.5),
+                colors: [
                   ColorConstants.primaryColor,
                   ColorConstants.secondaryColor
-                ])),
+                ],
+              ),
+            ),
           ),
-          // SizedBox(
-          //   height: height,
-          //   width: width,
-          //   child: Image.asset(
-          //     "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/0000038863_blue-geometric-background-vector_800.jpeg",
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
           Center(
             child: SingleChildScrollView(
               child: ConstrainedBox(
@@ -146,8 +139,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Create an account",
-                          style: TextStyles.h2.copyWith(color: Colors.white)),
+                      Text(
+                        "Create an account",
+                        style: TextStyles.h2.copyWith(color: Colors.white),
+                      ),
                       const SizedBox(height: 15),
                       CustomTextField(
                         label: "Name",

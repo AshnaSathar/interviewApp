@@ -46,8 +46,9 @@ class _FieldsPageState extends State<FieldsPage> {
                           context,
                           fieldId: field.id,
                           initialName: fieldData['name'],
+                          initialTitle: fieldData['title'],
+                          initialIcon: fieldData['icon'],
                           initialDescription: fieldData['description'],
-                          initialType: fieldData['type'],
                         );
                       } else if (value == 'delete') {
                         _deleteField(field.id);
@@ -73,16 +74,18 @@ class _FieldsPageState extends State<FieldsPage> {
     );
   }
 
-  // Show Add/Edit Dialog
+  // Show Add/Edit Dialog (updated to match Firestore structure: name, title, icon, description)
   void _showFieldDialog(BuildContext context,
       {String? fieldId,
       String? initialName,
-      String? initialDescription,
-      String? initialType}) {
+      String? initialTitle,
+      String? initialIcon,
+      String? initialDescription}) {
     final nameController = TextEditingController(text: initialName ?? '');
+    final titleController = TextEditingController(text: initialTitle ?? '');
+    final iconController = TextEditingController(text: initialIcon ?? '');
     final descriptionController =
         TextEditingController(text: initialDescription ?? '');
-    String selectedType = initialType ?? 'Text'; // Default type
 
     showDialog(
       context: context,
@@ -96,18 +99,16 @@ class _FieldsPageState extends State<FieldsPage> {
               decoration: const InputDecoration(labelText: 'Field Name'),
             ),
             TextField(
+              controller: titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
+            ),
+            TextField(
+              controller: iconController,
+              decoration: const InputDecoration(labelText: 'Icon'),
+            ),
+            TextField(
               controller: descriptionController,
               decoration: const InputDecoration(labelText: 'Description'),
-            ),
-            DropdownButtonFormField<String>(
-              value: selectedType,
-              items: ['Text', 'Number', 'Dropdown'].map((type) {
-                return DropdownMenuItem(value: type, child: Text(type));
-              }).toList(),
-              onChanged: (value) {
-                selectedType = value!;
-              },
-              decoration: const InputDecoration(labelText: 'Field Type'),
             ),
           ],
         ),
@@ -126,8 +127,9 @@ class _FieldsPageState extends State<FieldsPage> {
 
               final fieldData = {
                 'name': nameController.text.trim(),
+                'title': titleController.text.trim(),
+                'icon': iconController.text.trim(),
                 'description': descriptionController.text.trim(),
-                'type': selectedType,
                 'created_at': FieldValue.serverTimestamp(),
               };
 

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/constants/color_constants.dart';
-import 'package:flutter_application_1/constants/textstyle_constants.dart';
-import 'package:flutter_application_1/controller/question_controller/question_controller.dart';
+import 'package:flutter_application_1/controller/question_controller/job_fields_controller.dart';
+import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/users/jobs.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../model/job_field_model.dart';
 
 class FullCategoryPage extends StatefulWidget {
   const FullCategoryPage({super.key});
@@ -18,29 +17,17 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      // Provider.of<QuestionController>(context, listen: false).fetchFields();
+      Provider.of<JobFieldController>(context, listen: false).fetchJobFields();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final jobFieldController = Provider.of<QuestionController>(context);
-    final categories = jobFieldController.fields;
+    final jobFieldController = Provider.of<JobFieldController>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            context.go('/nav');
-          },
-          child: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: ColorConstants.primaryColor,
-      ),
-      body: jobFieldController.isLoadingFields
+      appBar: AppBar(title: const Text('All Categories')),
+      body: jobFieldController.isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -49,36 +36,46 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
-              itemCount: categories.length,
+              itemCount: jobFieldController.fields.length,
               itemBuilder: (context, index) {
+                final field = jobFieldController.fields[index];
+
                 return GestureDetector(
                   onTap: () {
-                    // Navigate to Job List Page and pass the selected category
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         JobPage(selectedCategory: categories[index]),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => JobsListPage(
+                          jobField: field,
+                          fieldId: '',
+                          fieldName: '',
+                        ),
+                      ),
+                    );
                   },
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         width: 80,
                         height: 80,
                         decoration: const BoxDecoration(
-                          color: Colors.grey,
+                          color: Colors.blueAccent,
                           shape: BoxShape.circle,
                         ),
-                        // Placeholder for icon
+                        child: Icon(
+                          _getIconByName(field.icon),
+                          size: 40,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        categories[index],
-                        textAlign: TextAlign.center,
-                        style: TextStyles.h6,
+                        field.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        field.title,
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
@@ -86,5 +83,26 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
               },
             ),
     );
+  }
+
+  IconData _getIconByName(String iconName) {
+    switch (iconName) {
+      case 'person':
+        return Icons.person;
+      case 'work':
+        return Icons.work;
+      case 'school':
+        return Icons.school;
+      case 'business':
+        return Icons.business;
+      case 'medical':
+        return Icons.local_hospital;
+      case 'computer':
+        return Icons.computer;
+      case 'car':
+        return Icons.directions_car;
+      default:
+        return Icons.help_outline;
+    }
   }
 }

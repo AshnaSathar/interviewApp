@@ -1,72 +1,62 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/constants/color_constants.dart';
-import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/model/job_field_model.dart';
-import 'package:flutter_application_1/view/users/question_page.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/model/job_model.dart';
 
-class JobPage extends StatelessWidget {
-  final JobField selectedCategory;
+class JobsListPage extends StatelessWidget {
+  final String fieldId;
+  final String fieldName;
 
-  const JobPage({super.key, required this.selectedCategory});
+  const JobsListPage(
+      {super.key,
+      required this.fieldId,
+      required this.fieldName,
+      required JobField jobField});
+
+  Future<List<Job>> fetchJobs() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Jobs')
+        .where('fieldId', isEqualTo: fieldId)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      return Job.fromMap(doc.data(), doc.id);
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final jobs = selectedCategory.jobs;
-
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            context.go('/nav');
-          },
-          child: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
-        ),
-        title: Text(selectedCategory.jobField),
-        backgroundColor: ColorConstants.primaryColor,
-      ),
-      body: jobs.isEmpty
-          ? Center(
-              child: Text(
-                "No jobs at the moment",
-                style: TextStyles.h6,
-              ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: jobs.length,
-              itemBuilder: (context, index) {
-                final jobKey = jobs.keys.elementAt(index);
-                final jobTitle = jobs[jobKey] ?? "Unknown Job";
+      appBar: AppBar(title: Text('$fieldName Jobs')),
+      body: FutureBuilder<List<Job>>(
+        future: fetchJobs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionPage(jobId: jobTitle),
-                        ));
-                    // context.push('/questions', extra: jobTitle);
-                  },
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        jobTitle,
-                        style: TextStyles.h6,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final jobs = snapshot.data ?? [];
+
+          if (jobs.isEmpty) {
+            return const Center(child: Text('No jobs found.'));
+          }
+
+          return ListView.builder(
+            itemCount: jobs.length,
+            itemBuilder: (context, index) {
+              final job = jobs[index];
+              return ListTile(
+                title: Text(job.name),
+                subtitle: Text(job.description),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

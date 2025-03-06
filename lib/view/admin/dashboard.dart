@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/admin/fields.dart';
-import 'package:flutter_application_1/view/admin/jobs.dart';
+import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/admin/questions.dart';
 import 'package:flutter_application_1/view/admin/users.dart';
 
@@ -13,7 +13,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   void navigateToPage(BuildContext context, Widget page) {
-    Navigator.pop(context); // This closes the drawer
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => page),
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
               title: Text("Fields"),
             ),
             ListTile(
-              onTap: () => navigateToPage(context, JobsPage()),
+              onTap: () => navigateToPage(context, JobsPageAdmin()),
               trailing: Icon(Icons.arrow_forward_ios, size: 20),
               title: Text("Jobs"),
             ),

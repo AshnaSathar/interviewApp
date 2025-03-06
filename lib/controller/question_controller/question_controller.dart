@@ -40,9 +40,14 @@ class QuestionController extends ChangeNotifier {
           .where('jobId', isEqualTo: jobId)
           .get();
 
-      fields = snapshot.docs
-          .map((doc) => doc.id)
-          .toList(); // Assuming field IDs are useful
+      fields = snapshot.docs.map((doc) {
+        final data = doc.data();
+        final fieldName = data['name'] ?? '';
+        final fieldTitle = data['title'] ?? '';
+        final fieldIcon = data['icon'] ?? 'person';
+        return '$fieldName|$fieldTitle|$fieldIcon'; // Combine data into a single string (for simplicity)
+      }).toList();
+// Assuming field IDs are useful
       print("Fetched ${fields.length} fields for job: $jobId");
     } catch (e) {
       print("Error fetching fields: $e");

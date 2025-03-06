@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/view/users/category_slide.dart';
+import 'package:flutter_application_1/view/users/custom_pages/all_jobs.dart';
 import 'package:flutter_application_1/view/users/custom_pages/custom_drawer.dart';
+import 'package:flutter_application_1/view/users/jobs.dart';
 import 'package:flutter_application_1/view/users/question_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
@@ -112,10 +114,15 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () {
                     //
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllJobsPage(),
+                        ));
                   },
                   child: Text(
                     "See all",
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: Colors.green),
                   ),
                 )
               ],
