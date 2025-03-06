@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/controller/question_controller/question_controller.dart';
+import 'package:flutter_application_1/model/question_model.dart';
 import 'package:provider/provider.dart';
 
 class QuestionPage extends StatefulWidget {
@@ -14,9 +15,17 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage> {
   int currentPage = 0;
-  String selectedType = "m_c";
+  String selectedType = "m_c"; // You can ignore this if all are MCQs
   int? selectedOption;
   bool showAnswer = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<QuestionController>().fetchQuestions(widget.jobId);
+    });
+  }
 
   void checkAnswer(int selected, String correctAnswer) {
     setState(() {
@@ -28,7 +37,7 @@ class _QuestionPageState extends State<QuestionPage> {
     });
   }
 
-  void nextPage(List questions) {
+  void nextPage(List<QuestionModel> questions) {
     if (currentPage < questions.length - 1) {
       setState(() {
         currentPage++;
@@ -65,45 +74,19 @@ class _QuestionPageState extends State<QuestionPage> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          var filteredQuestions = questionController.questions
-              .where((q) => q.job_id == widget.jobId && q.type == selectedType)
-              .toList();
-
-          if (filteredQuestions.isEmpty) {
-            return const Center(
-                child: Text("No questions available for this job."));
+          var questions = questionController.questions;
+          if (questions.isEmpty) {
+            return const Center(child: Text("No questions available."));
           }
 
-          var currentQuestion = filteredQuestions[currentPage];
-          bool isMultipleChoice = currentQuestion.type == 'm_c';
+          var currentQuestion = questions[currentPage];
           int correctAnswerIndex =
-              int.tryParse(currentQuestion.answer.toString()) ?? -1;
+              currentQuestion.options.indexOf(currentQuestion.answer);
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // Question Type Toggle
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ChoiceChip(
-                      label: const Text("Multiple Choice"),
-                      selected: selectedType == "m_c",
-                      onSelected: (selected) =>
-                          setState(() => selectedType = "m_c"),
-                    ),
-                    const SizedBox(width: 10),
-                    ChoiceChip(
-                      label: const Text("Long Answer"),
-                      selected: selectedType == "long",
-                      onSelected: (selected) =>
-                          setState(() => selectedType = "long"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-
                 Expanded(
                   child: ListView(
                     children: [
@@ -124,45 +107,40 @@ class _QuestionPageState extends State<QuestionPage> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
-                            // Multiple Choice Options
-                            if (isMultipleChoice)
-                              Column(
-                                children: List.generate(
-                                  currentQuestion.options.length,
-                                  (index) => Card(
-                                    color: showAnswer &&
-                                            index == correctAnswerIndex
-                                        ? Colors.green
-                                        : Colors.white,
-                                    child: ListTile(
-                                      leading: Radio<int>(
-                                        value: index,
-                                        groupValue: selectedOption,
-                                        activeColor: Colors.green,
-                                        onChanged: selectedOption == null
-                                            ? (int? value) {
-                                                setState(() {
-                                                  selectedOption = value;
-                                                });
-                                                checkAnswer(
-                                                    value!,
-                                                    currentQuestion.answer
-                                                        .toString());
-                                              }
-                                            : null,
-                                      ),
-                                      title: Text(
-                                        currentQuestion.options[index],
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
+                            Column(
+                              children: List.generate(
+                                currentQuestion.options.length,
+                                (index) => Card(
+                                  color:
+                                      showAnswer && index == correctAnswerIndex
+                                          ? Colors.green
+                                          : Colors.white,
+                                  child: ListTile(
+                                    leading: Radio<int>(
+                                      value: index,
+                                      groupValue: selectedOption,
+                                      activeColor: Colors.green,
+                                      onChanged: selectedOption == null
+                                          ? (int? value) {
+                                              setState(() {
+                                                selectedOption = value;
+                                              });
+                                              checkAnswer(
+                                                  value!,
+                                                  currentQuestion.options[
+                                                      correctAnswerIndex]);
+                                            }
+                                          : null,
+                                    ),
+                                    title: Text(
+                                      currentQuestion.options[index],
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 ),
                               ),
-
+                            ),
                             const SizedBox(height: 15),
-
                             if (showAnswer)
                               Container(
                                 padding: const EdgeInsets.all(12),
@@ -184,8 +162,6 @@ class _QuestionPageState extends State<QuestionPage> {
                     ],
                   ),
                 ),
-
-                // Navigation Buttons
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,14 +176,13 @@ class _QuestionPageState extends State<QuestionPage> {
                       child: const Text("Previous"),
                     ),
                     ElevatedButton(
-                      onPressed: currentPage < filteredQuestions.length - 1
-                          ? () => nextPage(filteredQuestions)
+                      onPressed: currentPage < questions.length - 1
+                          ? () => nextPage(questions)
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            currentPage < filteredQuestions.length - 1
-                                ? Colors.blueAccent
-                                : Colors.grey,
+                        backgroundColor: currentPage < questions.length - 1
+                            ? Colors.blueAccent
+                            : Colors.grey,
                         foregroundColor: Colors.white,
                       ),
                       child: const Text("Next"),

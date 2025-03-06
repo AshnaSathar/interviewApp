@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
+import 'package:flutter_application_1/view/users/full_category_page.dart';
+import 'package:flutter_application_1/view/users/jobs.dart';
 import 'package:go_router/go_router.dart';
 
 class CategorySlide extends StatefulWidget {
@@ -25,9 +28,9 @@ class _CategorySlideState extends State<CategorySlide> {
     final fetchedCategories = snapshot.docs.map((doc) {
       final data = doc.data();
       return {
-        "icon":
-            data['icon'] ?? 'person', // Default to 'person' if icon not present
-        "title": data['title'] ?? ''
+        "id": doc.id, // Add document ID here
+        "icon": data['icon'] ?? 'person',
+        "title": data['title'] ?? '',
       };
     }).toList();
 
@@ -36,7 +39,6 @@ class _CategorySlideState extends State<CategorySlide> {
     });
   }
 
-  // Helper function to convert icon string to actual Flutter IconData
   IconData _getIconByName(String iconName) {
     const iconMap = {
       "person": Icons.person,
@@ -53,23 +55,22 @@ class _CategorySlideState extends State<CategorySlide> {
       "sports_soccer": Icons.sports_soccer,
     };
 
-    // Return matching icon or fallback to person icon
     return iconMap[iconName] ?? Icons.person;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey,
-            blurRadius: 5,
-            spreadRadius: 2,
-            offset: Offset(0, 2),
+            color: Colors.black12,
+            blurRadius: 4, // Soft blur
+            spreadRadius: 1, // Slight spread
+            offset: Offset(0, 2), // Slight downward offset
           ),
         ],
+        color: Colors.white,
       ),
       height: MediaQuery.sizeOf(context).height * .18,
       child: Column(
@@ -86,13 +87,18 @@ class _CategorySlideState extends State<CategorySlide> {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  context.go('/categories');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullCategoryPage(),
+                      ));
+                  // context.go('/categories');
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Text(
                     "See all",
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: ColorConstants.primaryColor),
                   ),
                 ),
               )
@@ -116,7 +122,7 @@ class _CategorySlideState extends State<CategorySlide> {
                           height: 60,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.blue,
+                            color: ColorConstants.primaryColor,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
@@ -133,6 +139,7 @@ class _CategorySlideState extends State<CategorySlide> {
                         Text(
                           "See All",
                           style: TextStyles.normalText.copyWith(
+                            color: ColorConstants.primaryColor,
                             fontWeight: FontWeight.w100,
                           ),
                         )
@@ -151,25 +158,35 @@ class _CategorySlideState extends State<CategorySlide> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            iconData,
-                            color: Colors.white,
-                            size: 30,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      JobsListPage(fieldId: category['id']),
+                                ));
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4,
+                                  spreadRadius: 1,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              iconData,
+                              color: Colors.black,
+                              size: 30,
+                            ),
                           ),
                         ),
                       ),

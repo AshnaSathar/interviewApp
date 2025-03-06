@@ -30,17 +30,25 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
+            // Container(
+            //   height: height,
+            //   width: width,
+            //   decoration: BoxDecoration(
+            //     gradient: LinearGradient(
+            //       transform: GradientRotation(1.5),
+            //       colors: [
+            //         ColorConstants.primaryColor,
+            //         ColorConstants.secondaryColor
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Container(
-              height: height,
               width: width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  transform: GradientRotation(1.5),
-                  colors: [
-                    ColorConstants.primaryColor,
-                    ColorConstants.secondaryColor
-                  ],
-                ),
+              height: height,
+              child: Image.asset(
+                "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/wallpaper.jpg",
+                fit: BoxFit.fill,
               ),
             ),
             Column(
@@ -49,13 +57,32 @@ class _LoginPageState extends State<LoginPage> {
                   width: width,
                   height: height / 3,
                   child: Center(
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.forum, color: Colors.white),
-                        SizedBox(width: 10),
-                        Text("Interview",
-                            style: TextStyles.h1.copyWith(color: Colors.white)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.forum, color: Colors.black),
+                            SizedBox(width: 10),
+                            Text("Interview",
+                                style: TextStyles.h1
+                                    .copyWith(color: Colors.black)),
+                          ],
+                        ),
+                        Text("Your path to the perfect job starts here!",
+                            style: TextStyle(
+                                fontFamily: 'Sigmar',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(3, 3),
+                                    blurRadius: 8,
+                                    color: Colors.black.withOpacity(0.5),
+                                  ),
+                                ])),
                       ],
                     ),
                   ),
@@ -67,17 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 30),
-                        Text("Email",
-                            style: TextStyles.normalText
-                                .copyWith(color: Colors.white)),
+                        Text("Email", style: TextStyles.normalText),
                         const SizedBox(height: 15),
                         TextField(
-                          style: TextStyle(color: Colors.white),
                           controller: _controller.emailController,
                           decoration: InputDecoration(
                             hintText: "Email",
-                            hintStyle: TextStyles.normalText
-                                .copyWith(color: Colors.white),
+                            hintStyle: TextStyles.normalText,
                             prefixIcon: Icon(Icons.email, color: Colors.grey),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -85,25 +108,22 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 15),
-                        Text("Password",
-                            style: TextStyles.normalText
-                                .copyWith(color: Colors.white)),
+                        Text("Password", style: TextStyles.normalText),
                         const SizedBox(height: 15),
                         TextField(
                           controller: _controller.passwordController,
                           obscureText: _controller.obscureText,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(),
                           decoration: InputDecoration(
                             hintText: "Password",
-                            hintStyle: TextStyles.normalText
-                                .copyWith(color: Colors.white),
+                            hintStyle: TextStyles.normalText,
                             prefixIcon: Icon(Icons.lock, color: Colors.grey),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _controller.obscureText
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.white,
+                                color: Colors.grey,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -131,16 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                   },
                                 ),
-                                Text("Remember me",
-                                    style: TextStyle(color: Colors.white)),
+                                Text("Remember me", style: TextStyle()),
                               ],
                             ),
                             TextButton(
                               onPressed: () {
                                 context.push('/forget_password');
                               },
-                              child: Text("Forgot Password?",
-                                  style: TextStyle(color: Colors.white)),
+                              child:
+                                  Text("Forgot Password?", style: TextStyle()),
                             ),
                           ],
                         ),
@@ -192,18 +211,18 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ],
                                     border: Border.all(color: Colors.white38),
-                                    color: Colors.white,
+                                    color:
+                                        const Color.fromARGB(255, 255, 179, 1),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: _controller.isLoading
                                       ? CircularProgressIndicator(
-                                          color: Colors.white)
+                                          color: Colors.amber)
                                       : Center(
                                           child: Text(
                                             "Sign In",
                                             style: TextStyles.h6.copyWith(
-                                              color:
-                                                  ColorConstants.primaryColor,
+                                              color: Colors.black87,
                                             ),
                                           ),
                                         ),
@@ -219,14 +238,13 @@ class _LoginPageState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text("Don't have an account?",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle()),
                               TextButton(
                                 onPressed: () {
                                   context.push('/registration');
                                 },
                                 child: Text("Sign Up",
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     )),
                               ),

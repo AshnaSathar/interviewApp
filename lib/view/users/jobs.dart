@@ -2,20 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/job_field_model.dart';
 import 'package:flutter_application_1/model/job_model.dart';
+import 'package:flutter_application_1/view/users/question_page.dart';
 
 class JobsListPage extends StatelessWidget {
   final String fieldId;
-  final String fieldName;
 
-  const JobsListPage(
-      {super.key,
-      required this.fieldId,
-      required this.fieldName,
-      required JobField jobField});
+  const JobsListPage({
+    super.key,
+    required this.fieldId,
+  });
 
   Future<List<Job>> fetchJobs() async {
     final snapshot = await FirebaseFirestore.instance
-        .collection('Jobs')
+        .collection('jobs')
         .where('fieldId', isEqualTo: fieldId)
         .get();
 
@@ -27,7 +26,7 @@ class JobsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('$fieldName Jobs')),
+      // appBar: AppBar(title: Text('$fieldName Jobs')),
       body: FutureBuilder<List<Job>>(
         future: fetchJobs(),
         builder: (context, snapshot) {
@@ -49,9 +48,19 @@ class JobsListPage extends StatelessWidget {
             itemCount: jobs.length,
             itemBuilder: (context, index) {
               final job = jobs[index];
-              return ListTile(
-                title: Text(job.name),
-                subtitle: Text(job.description),
+              return InkWell(
+                onTap: () {
+                  //
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestionPage(jobId: job.id),
+                      ));
+                },
+                child: ListTile(
+                  title: Text(job.name),
+                  subtitle: Text(job.description),
+                ),
               );
             },
           );

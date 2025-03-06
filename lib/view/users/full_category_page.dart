@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/controller/question_controller/job_fields_controller.dart';
 import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/users/jobs.dart';
@@ -26,7 +27,15 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
     final jobFieldController = Provider.of<JobFieldController>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('All Categories')),
+      appBar: AppBar(
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back)),
+        title: const Text('All Categories'),
+        backgroundColor: ColorConstants.primaryColor,
+      ),
       body: jobFieldController.isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
@@ -46,9 +55,7 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => JobsListPage(
-                          jobField: field,
-                          fieldId: '',
-                          fieldName: '',
+                          fieldId: field.id,
                         ),
                       ),
                     );
@@ -59,7 +66,7 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
                         width: 80,
                         height: 80,
                         decoration: const BoxDecoration(
-                          color: Colors.blueAccent,
+                          color: ColorConstants.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(

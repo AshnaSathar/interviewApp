@@ -36,21 +36,23 @@ class _SplashPageState extends State<SplashPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-                gradient:
-                    LinearGradient(transform: GradientRotation(1.5), colors: [
-              ColorConstants.primaryColor,
-              ColorConstants.primaryColor,
-              const Color.fromARGB(255, 27, 73, 165),
-            ])),
-          ),
-          // Image.asset(
-          //   "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA2L3JtMjgzLW51bm55LTQ1MC1lLmpwZw.webp",
-          //   fit: BoxFit.fill,
+          // Container(
+          //   height: height,
+          //   width: width,
+          //   decoration: BoxDecoration(
+          //       gradient:
+          //           LinearGradient(transform: GradientRotation(1.5), colors: [
+          //     ColorConstants.primaryColor,
+          //     ColorConstants.primaryColor,
+          //     const Color.fromARGB(255, 27, 73, 165),
+          //   ])),
           // ),
+          Container(
+            child: Image.asset(
+              "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/laptop_wallpaper.jpg",
+              fit: BoxFit.cover,
+            ),
+          ),
           Column(
             children: [
               Container(
@@ -69,51 +71,87 @@ class _SplashPageState extends State<SplashPage> {
                             children: [
                               Icon(
                                 Icons.forum,
-                                color: Colors.white,
+                                color: ColorConstants.primaryColor,
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                "Interview",
-                                style:
-                                    TextStyles.h1.copyWith(color: Colors.white),
-                              ),
+                              Text("Interview",
+                                  style: TextStyle(
+                                      fontFamily: 'Sigmar',
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      shadows: [
+                                        Shadow(
+                                          offset: Offset(3, 3),
+                                          blurRadius: 8,
+                                          color: Colors.white.withOpacity(0.5),
+                                        ),
+                                      ]))
                             ],
+                          ),
+                          Text(
+                            "Master Every Interview with Confidence",
+                            style: TextStyle(
+                              fontFamily: 'Sigmar',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              shadows: [
+                                // Shadow(
+                                // offset: Offset(3, 3),
+                                // blurRadius: 8,
+                                // color: Colors.white.withOpacity(0.5),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 80,
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      height: MediaQuery.sizeOf(context).height / 2,
-                      child: Column(
-                        children: [
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
+                    Spacer(),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Positioned(
+                          bottom: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: () => _checkLoginStatus(),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.white,
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                      ),
-                                    )
+                              child: Container(
+                                height: height * .05,
+                                width: width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: ColorConstants.primaryColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(
+                                          0.3), // Slightly transparent shadow
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(0,
+                                          3), // Horizontal and vertical offset
+                                    ),
                                   ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Get In",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    )
+                        ))
                   ],
                 ),
               ),

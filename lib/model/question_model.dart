@@ -1,25 +1,28 @@
 class QuestionModel {
+  final String id;
   final String question;
   final List<String> options;
   final String answer;
-  final String type;
-  final String? job_id; // ✅ Make job_id optional
+  final String jobId;
+  final String fieldId;
 
   QuestionModel({
+    required this.id,
     required this.question,
     required this.options,
     required this.answer,
-    required this.type,
-    this.job_id,
+    required this.jobId,
+    required this.fieldId,
   });
 
-  factory QuestionModel.fromMap(Map<String, dynamic> map) {
+  factory QuestionModel.fromMap(String id, Map<String, dynamic> map) {
     return QuestionModel(
+      id: id,
       question: map['question'] ?? '',
       options: List<String>.from(map['options'] ?? []),
       answer: map['answer'] ?? '',
-      type: map['type'] ?? 'm_c', // Default type if missing
-      job_id: map['job_id'], // ✅ Include job_id if available
+      jobId: map['jobId'] ?? '',
+      fieldId: map['fieldId'] ?? '',
     );
   }
 }
