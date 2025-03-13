@@ -57,11 +57,8 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
 
     if (confirm) {
       if (_formKey.currentState!.validate() && resumeFile != null) {
-        // Create the application model. In a production app, you'd upload the resume to Firebase Storage
-        // and use the download URL instead of the local file path.
         final application = ApplicationModel(
-          vacancyId:
-              widget.vacancy.id, // VacancyModel should include an 'id' field.
+          vacancyId: widget.vacancy.id,
           candidateName: candidateName,
           candidateEmail: candidateEmail,
           candidatePhone: candidatePhone,

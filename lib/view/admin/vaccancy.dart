@@ -12,12 +12,12 @@ class VacancyPage extends StatelessWidget {
       appBar: AppBar(title: Text('Vacancies')),
       body: FutureBuilder(
         future: Provider.of<VacancyController>(context, listen: false)
-            .fetchVacancies(), // Ensure vacancies are loaded
+            .fetchVacancies(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Show loading
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading data')); // Handle error
+            return Center(child: Text('Error loading data'));
           }
           return Consumer<VacancyController>(
             builder: (context, vacancyController, child) {
@@ -71,7 +71,6 @@ class VacancyPage extends StatelessWidget {
                               ),
                             );
                           } else if (value == 'view_application') {
-                            // Navigate to the page that shows all applications for this vacancy.
                             Navigator.push(
                               context,
                               MaterialPageRoute(

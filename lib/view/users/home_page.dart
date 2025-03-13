@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
+import 'package:flutter_application_1/controller/video_controller.dart';
 import 'package:flutter_application_1/view/users/category_slide.dart';
 import 'package:flutter_application_1/view/users/custom_pages/all_jobs.dart';
 import 'package:flutter_application_1/view/users/custom_pages/custom_drawer.dart';
 import 'package:flutter_application_1/view/users/question_page.dart';
-import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,6 +36,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     fetchJobs();
+    final videoController =
+        Provider.of<VideoController>(context, listen: false).fetchVideos();
   }
 
   Future<void> fetchJobs() async {
@@ -68,10 +71,8 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: ColorConstants.primaryColor),
-        backgroundColor: Colors.white,
         title: isSearching
             ? TextField(
                 controller: searchController,
@@ -107,38 +108,10 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Stack(
-          //   children: [
-          //     Container(
-          //       color: Colors.white,
-          //       height: height * .3,
-          //       width: width,
-          //       child: Image.asset(
-          //         "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/mot.jpg",
-          //         fit: BoxFit.fill,
-          //       ),
-          //     ),
-          // Text(
-          //   "Practice Questions to Boost Your Confidence",
-          //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          // ),
-          //   ],
-          // )
-          // const Padding(
-          //   padding: EdgeInsets.all(8.0),
-          //   child: Text(
-          //     "Practice Questions to Boost Your Confidence",
-          //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          //   ),
-          // ),
-          // Container(
-          //   color: Colors.white,
-          //   height: height * .2,
-          //   width: width,
-          //   child: Lottie.asset("assets/images/Animation - 1739080900242.json"),
-          // ),
-          // ,
-          const CategorySlide(),
+          Container(
+              height: height * .3,
+              width: double.infinity,
+              child: Center(child: CategorySlide())),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

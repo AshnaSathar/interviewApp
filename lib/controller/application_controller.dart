@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/application_model.dart';
-import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'dart:io' as io show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 

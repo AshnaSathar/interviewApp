@@ -146,11 +146,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           decoration:
                               const InputDecoration(labelText: 'Select Job'),
                         ),
-                      ] else ...[
-                        // Text('Job: $_selectedJobName',
-                        //     style:
-                        //         const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
+                      ] else
+                        ...[],
                       TextField(
                         controller: _questionController,
                         decoration:

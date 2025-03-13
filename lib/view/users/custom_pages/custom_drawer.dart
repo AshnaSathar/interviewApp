@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
+import 'package:flutter_application_1/view/users/feedback_page.dart';
 import 'package:flutter_application_1/view/users/settings.dart';
 import 'package:flutter_application_1/view/users/vacancy_list_page.dart';
 import 'package:flutter_application_1/view/users/video_list_page.dart';
@@ -60,6 +61,18 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => VideoListPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.home, color: ColorConstants.primaryColor),
+            title: const Text("Subscription"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FeedbackPage(),
                   ));
             },
           ),

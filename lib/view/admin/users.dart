@@ -67,7 +67,7 @@ class _UsersPageState extends State<UsersPage> {
                         );
                       } else if (value == 'delete') {
                         _userController.deleteUser(context, docId).then((_) {
-                          setState(() {}); // Refresh after delete
+                          setState(() {});
                         });
                       }
                     },

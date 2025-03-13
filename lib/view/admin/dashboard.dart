@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/admin/feedback_Admin.dart';
 import 'package:flutter_application_1/view/admin/fields.dart';
 import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/admin/questions.dart';
@@ -67,6 +68,11 @@ class _DashboardState extends State<Dashboard> {
               onTap: () => navigateToPage(context, VideoManagement()),
               trailing: Icon(Icons.arrow_forward_ios, size: 20),
               title: Text("Video"),
+            ),
+            ListTile(
+              onTap: () => navigateToPage(context, ManageFeedback()),
+              trailing: Icon(Icons.arrow_forward_ios, size: 20),
+              title: Text("Feedbacks"),
             ),
           ],
         ),

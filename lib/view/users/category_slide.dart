@@ -28,7 +28,7 @@ class _CategorySlideState extends State<CategorySlide> {
     final fetchedCategories = snapshot.docs.map((doc) {
       final data = doc.data();
       return {
-        "id": doc.id, // Add document ID here
+        "id": doc.id,
         "icon": data['icon'] ?? 'person',
         "title": data['title'] ?? '',
       };
@@ -60,151 +60,113 @@ class _CategorySlideState extends State<CategorySlide> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4, // Soft blur
-            spreadRadius: 1, // Slight spread
-            offset: Offset(0, 2), // Slight downward offset
-          ),
-        ],
-        color: Colors.white,
-      ),
-      height: MediaQuery.sizeOf(context).height * .18,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  "Category",
-                  style: TextStyles.h6,
-                ),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FullCategoryPage(),
-                      ));
-                  // context.go('/categories');
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4, // Soft blur
+              spreadRadius: 1, // Slight spread
+              offset: Offset(0, 2), // Slight downward offset
+            ),
+          ],
+          color: Colors.white,
+        ),
+        height: MediaQuery.sizeOf(context).height * .18,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    "See all",
-                    style: TextStyle(color: ColorConstants.primaryColor),
+                    "Category",
+                    style: TextStyles.h6,
                   ),
                 ),
-              )
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length > 4 ? 5 : categories.length,
-              itemBuilder: (context, index) {
-                if (index == 4) {
-                  return GestureDetector(
-                    onTap: () {
-                      context.go('/category');
-                    },
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FullCategoryPage(),
+                        ));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Text(
+                      "See all",
+                      style: TextStyle(color: ColorConstants.primaryColor),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  final iconName = category["icon"] as String;
+                  final iconData = _getIconByName(iconName);
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: ColorConstants.primaryColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                                offset: Offset(0, 3),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        JobsListPage(fieldId: category['id']),
+                                  ));
+                            },
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 4,
+                                    spreadRadius: 1,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
                               ),
-                            ],
+                              child: Icon(
+                                iconData,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                            ),
                           ),
-                          child: const Icon(Icons.arrow_forward,
-                              color: Colors.white),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Text(
-                          "See All",
+                          category["title"],
+                          textAlign: TextAlign.center,
                           style: TextStyles.normalText.copyWith(
-                            color: ColorConstants.primaryColor,
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w400,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   );
-                }
-
-                final category = categories[index];
-                final iconName = category["icon"] as String;
-                final iconData = _getIconByName(iconName);
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      JobsListPage(fieldId: category['id']),
-                                ));
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 4,
-                                  spreadRadius: 1,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              iconData,
-                              color: Colors.black,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        category["title"],
-                        textAlign: TextAlign.center,
-                        style: TextStyles.normalText.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -13,15 +13,12 @@ class LoginController {
   bool isLoading = false;
   String errorMessage = '';
 
-  // Toggle password visibility
   void toggleObscureText() {
     obscureText = !obscureText;
   }
 
-  // Login Function
   Future<String?> login() async {
     try {
-      // Step 1 - Authenticate user using email & password
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -33,7 +30,6 @@ class LoginController {
       print("Firebase Initialized Successfully!");
       print("Logged-in user email: $userEmail");
 
-      // Step 2 - Fetch Role from Firestore based on email
       final String? role = await getUserRole(userEmail);
 
       if (role == null) {
@@ -55,7 +51,6 @@ class LoginController {
     }
   }
 
-  // Fetch role from Firestore
   Future<String?> getUserRole(String userEmail) async {
     try {
       QuerySnapshot querySnapshot = await _firestore

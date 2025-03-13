@@ -118,14 +118,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
           Container(
             height: height,
             width: width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                transform: GradientRotation(1.5),
-                colors: [
-                  ColorConstants.primaryColor,
-                  ColorConstants.secondaryColor
-                ],
-              ),
+            child: Image.asset(
+              '/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/wallpaper.jpg',
+              fit: BoxFit.fill,
             ),
           ),
           Center(
@@ -141,7 +136,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     children: [
                       Text(
                         "Create an account",
-                        style: TextStyles.h2.copyWith(color: Colors.white),
+                        style: TextStyles.h2.copyWith(color: Colors.black),
                       ),
                       const SizedBox(height: 15),
                       CustomTextField(
@@ -176,7 +171,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         child: ElevatedButton(
                           onPressed: _registerUser,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: ColorConstants.primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -185,8 +180,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           child: Text(
                             "Sign Up",
-                            style: TextStyles.h6
-                                .copyWith(color: ColorConstants.primaryColor),
+                            style: TextStyles.h6.copyWith(color: Colors.white),
                           ),
                         ),
                       ),

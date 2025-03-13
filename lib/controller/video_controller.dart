@@ -8,7 +8,6 @@ class VideoController extends ChangeNotifier {
   List<Map<String, dynamic>> get videos => _videos;
   bool get isLoading => _isLoading;
 
-  /// Fetch all videos from Firestore (including URL, title, description)
   Future<void> fetchVideos() async {
     _isLoading = true;
     notifyListeners();
@@ -34,7 +33,6 @@ class VideoController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Add a new video with URL, title, and description to Firestore.
   Future<void> addVideo(String url, String title, String description) async {
     try {
       DocumentReference docRef =
@@ -57,7 +55,6 @@ class VideoController extends ChangeNotifier {
     }
   }
 
-  /// Delete a video from Firestore.
   Future<void> deleteVideo(String id) async {
     try {
       await FirebaseFirestore.instance.collection('videos').doc(id).delete();

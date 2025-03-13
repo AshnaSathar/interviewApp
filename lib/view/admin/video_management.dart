@@ -68,7 +68,6 @@ class _VideoManagementState extends State<VideoManagement> {
               final String title = video['title'] ?? "No Title";
               final String description =
                   video['description'] ?? "No Description";
-              // Get video thumbnail using YouTube video id.
               final videoId = YoutubePlayer.convertUrlToId(url);
               return ListTile(
                 leading: videoId != null
@@ -100,7 +99,6 @@ class _VideoManagementState extends State<VideoManagement> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          // Navigate to the Add Video page.
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const AddVideoPage()),

@@ -52,10 +52,8 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
     };
 
     if (jobId == null) {
-      // Create new job
       await FirebaseFirestore.instance.collection('jobs').add(data);
     } else {
-      // Update existing job
       await FirebaseFirestore.instance
           .collection('jobs')
           .doc(jobId)
@@ -65,8 +63,8 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
     _nameController.clear();
     _descController.clear();
     selectedFieldId = null;
-    fetchFields(); // Reload data
-    Navigator.pop(context); // Close dialog
+    fetchFields();
+    Navigator.pop(context);
   }
 
   Future<void> deleteJob(String jobId) async {
@@ -93,10 +91,8 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
             return AlertDialog(
               title: Text(jobId == null ? 'Add Job' : 'Edit Job'),
               content: SingleChildScrollView(
-                // Wrap content to allow proper height adjustment
                 child: Column(
-                  mainAxisSize: MainAxisSize
-                      .min, // Important for fitting content correctly
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: _nameController,
@@ -108,8 +104,7 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
                           const InputDecoration(labelText: 'Description'),
                     ),
                     DropdownButtonFormField<String>(
-                      value:
-                          localSelectedFieldId, // Bind value to localSelectedFieldId (critical)
+                      value: localSelectedFieldId,
                       decoration: const InputDecoration(labelText: 'Field'),
                       items: fields.map<DropdownMenuItem<String>>((field) {
                         return DropdownMenuItem<String>(
@@ -120,8 +115,7 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
                       onChanged: (value) {
                         setDialogState(() {
                           localSelectedFieldId = value;
-                          print(
-                              'Selected field ID: $localSelectedFieldId'); // <-- Debug print
+                          print('Selected field ID: $localSelectedFieldId');
                         });
                       },
                     ),

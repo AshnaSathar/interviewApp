@@ -15,8 +15,6 @@ class AddVacancyPage extends StatefulWidget {
 class _AddVacancyPageState extends State<AddVacancyPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // For adding a new vacancy, these fields must be filled.
-  // When updating, they are read-only.
   final Map<String, dynamic> vacancyData = {
     'jobPosition': '',
     'companyName': '',
@@ -24,15 +22,15 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
     'companyAddress': '',
     'phoneNumber': '',
     'email': '',
-    'salary': null, // expects a number
+    'salary': null,
     'place': '',
     'description': '',
-    'jobType': '', // dropdown field
+    'jobType': '',
     'preferredSkills': <String>[],
     'languagePreferred': <String>[],
-    'experience': null, // number (years)
-    'ageFrom': null, // number
-    'ageTo': null, // number
+    'experience': null,
+    'ageFrom': null,
+    'ageTo': null,
   };
 
   TextEditingController _skillController = TextEditingController();
@@ -60,11 +58,9 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
         padding: EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          // Validate on user interaction.
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: ListView(
             children: [
-              // Required fields when adding; read-only when updating.
               _buildTextField('Job Position', 'jobPosition',
                   required: true, readOnly: isUpdate),
               _buildTextField('Company Name', 'companyName',
@@ -81,12 +77,10 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
                   required: true,
                   readOnly: isUpdate,
                   keyboardType: TextInputType.emailAddress),
-              // Salary now uses a number field.
               _buildNumberField('Salary', 'salary'),
               _buildTextField('Place', 'place'),
               _buildTextField('Description', 'description', required: true),
               _buildDropdownField('Job Type', 'jobType'),
-              // Experience, Age From, Age To are number fields.
               _buildNumberField('Experience (years)', 'experience'),
               _buildNumberField('Age From', 'ageFrom'),
               _buildNumberField('Age To', 'ageTo'),
@@ -99,7 +93,6 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     try {
-                      // For debugging, print the vacancyData map.
                       print("Submitting vacancyData: $vacancyData");
                       final newVacancy = VacancyModel.fromMap(
                         vacancyData,
@@ -172,7 +165,6 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
         initialValue: vacancyData[key]?.toString() ?? '',
         keyboardType: TextInputType.number,
         onChanged: (val) {
-          // Try to parse the number; if fails, set as null.
           vacancyData[key] = int.tryParse(val.trim()) ?? null;
         },
         decoration: InputDecoration(

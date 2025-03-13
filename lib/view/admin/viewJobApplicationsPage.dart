@@ -23,7 +23,6 @@ class _ViewJobApplicationsPageState extends State<ViewJobApplicationsPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch applications for the given vacancy.
     Provider.of<ApplicationController>(context, listen: false)
         .fetchApplicationsForVacancy(widget.vacancyId);
   }
@@ -47,13 +46,6 @@ class _ViewJobApplicationsPageState extends State<ViewJobApplicationsPage> {
                 child: ListTile(
                   title: Text(application.candidateName),
                   subtitle: Text("Email: ${application.candidateEmail}"),
-                  // trailing: IconButton(
-                  //   icon: Icon(Icons.download, color: Colors.blue),
-                  // onPressed: () {
-                  //   Provider.of<ApplicationController>(context, listen: false)
-                  //       .downloadResume(application.resumePath);
-                  // },
-                  // ),
                   onTap: () {
                     showDialog(
                       context: context,

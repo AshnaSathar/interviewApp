@@ -72,8 +72,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       "email": emailController.text,
       "dob": dobController.text,
       "mobile": mobileController.text,
-      "profileImage": _newProfileImage?.path ??
-          _currentProfileImage, // Send updated image path if available
+      "profileImage": _newProfileImage?.path ?? _currentProfileImage,
     });
   }
 

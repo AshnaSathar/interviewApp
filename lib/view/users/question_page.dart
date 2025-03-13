@@ -3,6 +3,7 @@ import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/controller/question_controller/question_controller.dart';
 import 'package:flutter_application_1/model/question_model.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 class QuestionPage extends StatefulWidget {
   final String jobId;
@@ -15,21 +16,48 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage> {
   int currentPage = 0;
-  String selectedType = "m_c"; // You can ignore this if all are MCQs
   int? selectedOption;
   bool showAnswer = false;
+  int score = 0;
+  int totalTime = 30; // 30 seconds per question
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<QuestionController>().fetchQuestions(widget.jobId);
+      context.read<QuestionController>().fetchQuestions(widget.jobId).then((_) {
+        if (context.read<QuestionController>().questions.isNotEmpty) {
+          startTimer();
+        }
+      });
+    });
+  }
+
+  void startTimer() {
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (totalTime > 0) {
+        setState(() {
+          totalTime--;
+        });
+      } else {
+        timer.cancel();
+        nextPage(context.read<QuestionController>().questions);
+      }
     });
   }
 
   void checkAnswer(int selected, String correctAnswer) {
     setState(() {
       showAnswer = true;
+      if (context
+              .read<QuestionController>()
+              .questions[currentPage]
+              .options[selected] ==
+          correctAnswer) {
+        score++;
+      }
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -43,17 +71,45 @@ class _QuestionPageState extends State<QuestionPage> {
         currentPage++;
         selectedOption = null;
         showAnswer = false;
+        totalTime = 30;
       });
+      startTimer();
+    } else {
+      timer?.cancel();
+      showScorePopup();
     }
   }
 
-  void previousPage() {
-    if (currentPage > 0) {
-      setState(() {
-        currentPage--;
-        selectedOption = null;
-        showAnswer = false;
-      });
+  void showScorePopup() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text("Quiz Completed"),
+        content: Text(
+            "Your Score: $score/${context.read<QuestionController>().questions.length}\n\nPerformance: ${getPerformanceMessage()}"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String getPerformanceMessage() {
+    double percentage =
+        (score / context.read<QuestionController>().questions.length) * 100;
+    if (percentage >= 80) {
+      return "Excellent! Keep it up!";
+    } else if (percentage >= 50) {
+      return "Good Job! Keep practicing.";
+    } else {
+      return "Needs Improvement. Try again!";
     }
   }
 
@@ -87,6 +143,8 @@ class _QuestionPageState extends State<QuestionPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                Text("Time Left: $totalTime sec",
+                    style: const TextStyle(fontSize: 18, color: Colors.red)),
                 Expanded(
                   child: ListView(
                     children: [
@@ -162,38 +220,17 @@ class _QuestionPageState extends State<QuestionPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: currentPage > 0 ? previousPage : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            currentPage > 0 ? Colors.blueAccent : Colors.grey,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text("Previous"),
-                    ),
-                    ElevatedButton(
-                      onPressed: currentPage < questions.length - 1
-                          ? () => nextPage(questions)
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: currentPage < questions.length - 1
-                            ? Colors.blueAccent
-                            : Colors.grey,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text("Next"),
-                    ),
-                  ],
-                ),
               ],
             ),
           );
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }
