@@ -53,7 +53,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
       return;
     }
 
-    // Base data common for both add and update
     final questionData = {
       'question': _questionController.text,
       'options': _optionControllers.map((c) => c.text).toList(),
@@ -61,7 +60,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
       'created_at': FieldValue.serverTimestamp(),
     };
 
-    // Only include jobId and fieldId for new questions (creation)
     if (questionId == null) {
       questionData['jobId'] = _selectedJobId;
       questionData['fieldId'] = _selectedFieldId;

@@ -3,6 +3,8 @@ import 'package:flutter_application_1/view/admin/fields.dart';
 import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/admin/questions.dart';
 import 'package:flutter_application_1/view/admin/users.dart';
+import 'package:flutter_application_1/view/admin/vaccancy.dart';
+import 'package:flutter_application_1/view/admin/video_management.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -55,6 +57,16 @@ class _DashboardState extends State<Dashboard> {
               onTap: () => navigateToPage(context, QuestionsPage()),
               trailing: Icon(Icons.arrow_forward_ios, size: 20),
               title: Text("Questions"),
+            ),
+            ListTile(
+              onTap: () => navigateToPage(context, VacancyPage()),
+              trailing: Icon(Icons.arrow_forward_ios, size: 20),
+              title: Text("Vaccancy"),
+            ),
+            ListTile(
+              onTap: () => navigateToPage(context, VideoManagement()),
+              trailing: Icon(Icons.arrow_forward_ios, size: 20),
+              title: Text("Video"),
             ),
           ],
         ),

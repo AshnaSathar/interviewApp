@@ -1,6 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/application_controller.dart';
 import 'package:flutter_application_1/controller/question_controller/job_fields_controller.dart';
 import 'package:flutter_application_1/controller/question_controller/question_controller.dart';
+import 'package:flutter_application_1/controller/vaccancy_controller.dart';
+import 'package:flutter_application_1/controller/video_controller.dart';
 import 'package:flutter_application_1/view/admin/dashboard.dart';
 import 'package:flutter_application_1/view/users/full_category_page.dart';
 import 'package:flutter_application_1/view/users/forget_password.dart';
@@ -12,34 +16,42 @@ import 'package:flutter_application_1/view/users/profile_page.dart';
 import 'package:flutter_application_1/view/users/question_page.dart';
 import 'package:flutter_application_1/view/users/registration_page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/view/users/splash_page.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: 'AIzaSyBuZpA-UGQDmSoHyfQH3sXe_5irouzRLqI',
-        appId: '1:261877854038:android:dd756a8bebdbdc5a5bb0f7',
-        messagingSenderId: '261877854038',
-        projectId: 'interview-f857d',
-      ),
-    );
-    print("Firebase Initialized Successfully!");
+    // Check if a default app already exists.
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: FirebaseOptions(
+          apiKey: 'AIzaSyBuZpA-UGQDmSoHyfQH3sXe_5irouzRLqI',
+          appId: '1:261877854038:android:dd756a8bebdbdc5a5bb0f7',
+          messagingSenderId: '261877854038',
+          projectId: 'interview-f857d',
+          storageBucket:
+              'interview-f857d.appspot.com', // Add your storage bucket.
+        ),
+      );
+      print("Firebase Initialized Successfully!");
+    }
   } catch (e) {
     print("Error initializing Firebase: $e");
-    return;
-    // }
   }
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => QuestionController()),
-    ChangeNotifierProvider(create: (context) => JobFieldController()),
-
-    // JobFieldController
-  ], child: MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => QuestionController()),
+        ChangeNotifierProvider(create: (context) => JobFieldController()),
+        ChangeNotifierProvider(create: (context) => VacancyController()),
+        ChangeNotifierProvider(create: (context) => VideoController()),
+        ChangeNotifierProvider(create: (context) => ApplicationController()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -89,14 +101,6 @@ final GoRouter _router = GoRouter(
       path: '/nav',
       builder: (context, state) => const NavPage(),
     ),
-    // GoRoute(
-    //   path: '/addQuestions',
-    //   builder: (context, state) => const AddQuestions(),
-    // ),
-    // GoRoute(
-    //   path: '/questions',
-    //   builder: (context, state) => const QuestionPage(),
-    // ),
     GoRoute(
       path: '/forget_password',
       builder: (context, state) => const ForgetPassword(),

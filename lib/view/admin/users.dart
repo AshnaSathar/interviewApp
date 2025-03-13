@@ -102,7 +102,7 @@ class _UsersPageState extends State<UsersPage> {
     final emailController = TextEditingController();
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-    String selectedRole = 'user'; // Default role
+    String selectedRole = 'user';
 
     showDialog(
       context: context,

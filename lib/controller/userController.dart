@@ -20,7 +20,7 @@ class UserController {
       await usersCollection.add({
         'email': email,
         'username': username,
-        'password': password, // Optional if needed
+        'password': password,
         'role': role,
       });
       ScaffoldMessenger.of(context).showSnackBar(
