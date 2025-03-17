@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/controller/login_controller.dart';
+import 'package:flutter_application_1/view/users/custom_pages/email_verification.dart';
+import 'package:flutter_application_1/view/users/home_page.dart';
+import 'package:flutter_application_1/view/users/registration_page.dart';
 // import 'package:flutter_application_1/controllers/login_controller.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    // _controller.loadSavedCredentials();
   }
 
   @override
@@ -182,7 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                                         context.push('/admin-dashboard');
                                       } else if (role == 'user' &&
                                           context.mounted) {
-                                        context.push('/home');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => HomePage(),
+                                            ));
                                       }
                                     } else {
                                       ScaffoldMessenger.of(context)
@@ -241,7 +248,13 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle()),
                               TextButton(
                                 onPressed: () {
-                                  context.push('/registration');
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EmailVerificationPage(),
+                                      ));
+                                  // context.push('/registration');
                                 },
                                 child: Text("Sign Up",
                                     style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 
 class UpdateUserPage extends StatefulWidget {
   const UpdateUserPage({super.key});
@@ -48,7 +49,14 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Update User')),
+      appBar: AppBar(
+        title: Text(
+          'Update User',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

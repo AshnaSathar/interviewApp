@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 
 class JobsPageAdmin extends StatefulWidget {
   const JobsPageAdmin({super.key});
@@ -147,7 +148,14 @@ class _JobsPageAdminState extends State<JobsPageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Jobs')),
+      appBar: AppBar(
+        title: Text(
+          'Manage Jobs',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
         builder: (context, snapshot) {

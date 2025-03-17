@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/view/users/video_details_page.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -13,7 +14,13 @@ class VideoListPage extends StatelessWidget {
     final bool isLargeScreen = screenWidth > 600;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Videos")),
+      appBar: AppBar(
+        title: Text(
+          "Videos",
+          style: TextStyles.normalText.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.amber,
+      ),
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
             .collection('videos')

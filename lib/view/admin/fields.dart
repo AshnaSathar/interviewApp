@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 
 class FieldsPage extends StatefulWidget {
   const FieldsPage({super.key});
@@ -15,7 +16,14 @@ class _FieldsPageState extends State<FieldsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Fields')),
+      appBar: AppBar(
+        title: Text(
+          'Manage Fields',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: fieldsCollection.snapshots(),
         builder: (context, snapshot) {

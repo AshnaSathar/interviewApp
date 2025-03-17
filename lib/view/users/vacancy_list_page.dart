@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/view/users/job_details_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/vaccancy_controller.dart';
@@ -15,7 +16,6 @@ class _VacancyListState extends State<VacancyList> {
   @override
   void initState() {
     super.initState();
-    // Fetch vacancies when the page loads.
     Provider.of<VacancyController>(context, listen: false).fetchVacancies();
   }
 
@@ -23,7 +23,11 @@ class _VacancyListState extends State<VacancyList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Vacancies"),
+        backgroundColor: Colors.amber,
+        title: Text(
+          "Vacancies",
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
       ),
       body: Consumer<VacancyController>(
         builder: (context, vacancyController, child) {

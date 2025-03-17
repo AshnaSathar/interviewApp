@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:flutter/foundation.dart'; // for kIsWeb if needed
 
@@ -45,7 +46,13 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     final bool isLargeScreen = screenWidth > 600;
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(
+          widget.title,
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.amber,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

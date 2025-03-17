@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/job_field_model.dart';
+import 'package:flutter_application_1/constants/color_constants.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/model/job_model.dart';
 import 'package:flutter_application_1/view/users/question_page.dart';
 
@@ -26,7 +27,13 @@ class JobsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('$fieldName Jobs')),
+      appBar: AppBar(
+        backgroundColor: ColorConstants.primaryColor,
+        title: Text(
+          'Jobs List',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+      ),
       body: FutureBuilder<List<Job>>(
         future: fetchJobs(),
         builder: (context, snapshot) {
@@ -48,18 +55,33 @@ class JobsListPage extends StatelessWidget {
             itemCount: jobs.length,
             itemBuilder: (context, index) {
               final job = jobs[index];
-              return InkWell(
-                onTap: () {
-                  //
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuestionPage(jobId: job.id),
-                      ));
-                },
-                child: ListTile(
-                  title: Text(job.name),
-                  subtitle: Text(job.description),
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuestionPage(jobId: job.id),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(12),
+                      title: Text(
+                        job.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(job.description),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    ),
+                  ),
                 ),
               );
             },

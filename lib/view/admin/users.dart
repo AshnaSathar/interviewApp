@@ -18,7 +18,7 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: ColorConstants.primaryColor,
+        backgroundColor: Colors.red,
         title: const Text(
           'Users',
           style: TextStyle(color: Colors.white),

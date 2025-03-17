@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/controller/feedback_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,12 @@ class _ManageFeedbackState extends State<ManageFeedback> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Feedbacks'),
-        backgroundColor: ColorConstants.primaryColor,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'All Feedbacks',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: Provider.of<FeedbackController>(context, listen: false)

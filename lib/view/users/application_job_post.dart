@@ -5,6 +5,8 @@ import 'package:flutter_application_1/model/vaccancy_model.dart';
 import 'package:flutter_application_1/model/application_model.dart';
 import 'package:flutter_application_1/controller/application_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ApplyForPostPage extends StatefulWidget {
   final VacancyModel vacancy;
@@ -17,10 +19,44 @@ class ApplyForPostPage extends StatefulWidget {
 
 class _ApplyForPostPageState extends State<ApplyForPostPage> {
   final _formKey = GlobalKey<FormState>();
-  String candidateName = '';
-  String candidateEmail = '';
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   String candidatePhone = '';
   File? resumeFile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.email != null) {
+      try {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('user_roles')
+            .where('email', isEqualTo: user.email)
+            .limit(1)
+            .get();
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot doc = querySnapshot.docs.first;
+          final data = doc.data() as Map<String, dynamic>;
+          print(data);
+          setState(() {
+            nameController.text = data['user_name'] ?? '';
+            emailController.text = data['email'] ?? '';
+          });
+        } else {
+          print("No user_roles document found for ${user.email}");
+        }
+      } catch (e) {
+        print("Error fetching user data: $e");
+      }
+    }
+  }
 
   Future<void> _pickResumeFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -35,20 +71,19 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
   }
 
   Future<void> _confirmAndSubmitApplication() async {
-    // Show confirmation dialog before submission.
     bool confirm = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("Confirm Submission"),
-            content: Text(
+            title: const Text("Confirm Submission"),
+            content: const Text(
                 "Once submitted, your application cannot be edited. Do you want to submit?"),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text("Cancel")),
+                  child: const Text("Cancel")),
               TextButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child: Text("Submit",
+                  child: const Text("Submit",
                       style: TextStyle(fontWeight: FontWeight.bold))),
             ],
           ),
@@ -59,8 +94,8 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
       if (_formKey.currentState!.validate() && resumeFile != null) {
         final application = ApplicationModel(
           vacancyId: widget.vacancy.id,
-          candidateName: candidateName,
-          candidateEmail: candidateEmail,
+          candidateName: nameController.text,
+          candidateEmail: emailController.text,
           candidatePhone: candidatePhone,
           resumePath: resumeFile!.path,
         );
@@ -69,7 +104,8 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
           await Provider.of<ApplicationController>(context, listen: false)
               .submitApplication(application);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Application submitted successfully!')),
+            const SnackBar(
+                content: Text('Application submitted successfully!')),
           );
           Navigator.pop(context);
         } catch (e) {
@@ -80,11 +116,18 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
       } else {
         if (resumeFile == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Please upload your resume.')),
+            const SnackBar(content: Text('Please upload your resume.')),
           );
         }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,28 +137,30 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
         title: Text("Apply for ${widget.vacancy.jobPosition}"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
               Text(
                 "Vacancy: ${widget.vacancy.jobPosition}",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(
+                controller: nameController,
+                decoration: const InputDecoration(
                   labelText: "Your Name",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Required' : null,
-                onChanged: (val) => candidateName = val,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(
+                controller: emailController,
+                decoration: const InputDecoration(
                   labelText: "Your Email",
                   border: OutlineInputBorder(),
                 ),
@@ -124,11 +169,10 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
                   if (!value.contains('@')) return 'Enter a valid email';
                   return null;
                 },
-                onChanged: (val) => candidateEmail = val,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Your Phone Number",
                   border: OutlineInputBorder(),
                 ),
@@ -141,30 +185,30 @@ class _ApplyForPostPageState extends State<ApplyForPostPage> {
                 },
                 onChanged: (val) => candidatePhone = val,
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 "Upload Resume:",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ElevatedButton.icon(
                 onPressed: _pickResumeFile,
-                icon: Icon(Icons.upload_file),
-                label: Text("Choose File"),
+                icon: const Icon(Icons.upload_file),
+                label: const Text("Choose File"),
               ),
               resumeFile != null
                   ? Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         "Selected File: ${resumeFile!.path.split('/').last}",
-                        style: TextStyle(fontStyle: FontStyle.italic),
+                        style: const TextStyle(fontStyle: FontStyle.italic),
                       ),
                     )
                   : Container(),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _confirmAndSubmitApplication,
-                child: Text("Submit Application"),
+                child: const Text("Submit Application"),
               ),
             ],
           ),

@@ -40,10 +40,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 MaterialPageRoute(
                   builder: (context) => EditProfilePage(
                     name: name,
-                    designation: designation,
+                    // designation: designation,
                     email: email,
-                    dob: dob,
-                    mobile: mobile,
+                    // dob: dob,
+                    // mobile: mobile,
                     profileImage: profileImage,
                   ),
                 ),
@@ -52,10 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
               if (updatedData != null) {
                 setState(() {
                   name = updatedData["name"];
-                  designation = updatedData["designation"];
+                  // designation = updatedData["designation"];
                   email = updatedData["email"];
-                  dob = updatedData["dob"];
-                  mobile = updatedData["mobile"];
+                  // dob = updatedData["dob"];
+                  // mobile = updatedData["mobile"];
                   profileImage = updatedData["profileImage"] ?? profileImage;
                 });
               }
@@ -81,9 +81,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   final pickedImage = await ImagePicker()
                       .pickImage(source: ImageSource.gallery);
                   if (pickedImage != null) {
-                    setState(() {
-                      profileImage = pickedImage.path;
-                    });
+                    setState(
+                      () {
+                        profileImage = pickedImage.path;
+                      },
+                    );
                   }
                 },
                 child: CircleAvatar(

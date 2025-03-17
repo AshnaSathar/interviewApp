@@ -19,7 +19,7 @@ class _QuestionPageState extends State<QuestionPage> {
   int? selectedOption;
   bool showAnswer = false;
   int score = 0;
-  int totalTime = 30; // 30 seconds per question
+  int totalTime = 30;
   Timer? timer;
 
   @override

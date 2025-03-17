@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 
 class QuestionsPage extends StatefulWidget {
   const QuestionsPage({super.key});
@@ -215,7 +216,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Questions')),
+      appBar: AppBar(
+        title: Text(
+          'Manage Questions',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('questions')

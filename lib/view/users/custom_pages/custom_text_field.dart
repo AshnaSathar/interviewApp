@@ -27,12 +27,12 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         TextField(
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
           controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: label,
-            hintStyle: TextStyle(color: Colors.white),
+            hintStyle: TextStyle(color: Colors.black),
             prefixIcon: Icon(icon, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),

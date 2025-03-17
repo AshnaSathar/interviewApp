@@ -63,15 +63,7 @@ class _CategorySlideState extends State<CategorySlide> {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4, // Soft blur
-              spreadRadius: 1, // Slight spread
-              offset: Offset(0, 2), // Slight downward offset
-            ),
-          ],
-          color: Colors.white,
+          boxShadow: [],
         ),
         height: MediaQuery.sizeOf(context).height * .18,
         child: Column(
@@ -82,7 +74,7 @@ class _CategorySlideState extends State<CategorySlide> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     "Category",
-                    style: TextStyles.h6,
+                    style: TextStyles.h6.copyWith(color: Colors.black),
                   ),
                 ),
                 const Spacer(),
@@ -98,7 +90,7 @@ class _CategorySlideState extends State<CategorySlide> {
                     padding: EdgeInsets.only(right: 8.0),
                     child: Text(
                       "See all",
-                      style: TextStyle(color: ColorConstants.primaryColor),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/view/admin/add_video.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/video_controller.dart';
@@ -51,7 +52,14 @@ class _VideoManagementState extends State<VideoManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Video Management")),
+      appBar: AppBar(
+        title: Text(
+          "Video Management",
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Consumer<VideoController>(
         builder: (context, controller, child) {
           if (controller.isLoading) {

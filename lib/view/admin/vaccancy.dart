@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/controller/vaccancy_controller.dart';
 import 'package:flutter_application_1/model/vaccancy_model.dart';
 import 'package:flutter_application_1/view/admin/viewJobApplicationsPage.dart';
@@ -9,7 +10,14 @@ class VacancyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Vacancies')),
+      appBar: AppBar(
+        title: Text(
+          'Vacancies',
+          style: TextStyles.h5.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: FutureBuilder(
         future: Provider.of<VacancyController>(context, listen: false)
             .fetchVacancies(),

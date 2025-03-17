@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/controller/question_controller/job_fields_controller.dart';
-import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
 import 'package:flutter_application_1/view/users/jobs.dart';
 import 'package:provider/provider.dart';
-import '../../model/job_field_model.dart';
 
 class FullCategoryPage extends StatefulWidget {
   const FullCategoryPage({super.key});
@@ -29,66 +27,83 @@ class _FullCategoryPageState extends State<FullCategoryPage> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(Icons.arrow_back),
+        ),
         title: const Text('All Categories'),
         backgroundColor: ColorConstants.primaryColor,
       ),
-      body: jobFieldController.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: jobFieldController.fields.length,
-              itemBuilder: (context, index) {
-                final field = jobFieldController.fields[index];
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          int crossAxisCount = constraints.maxWidth > 600 ? 4 : 2;
+          double boxSize = constraints.maxWidth / crossAxisCount - 20;
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => JobsListPage(
-                          fieldId: field.id,
+          return jobFieldController.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: jobFieldController.fields.length,
+                  itemBuilder: (context, index) {
+                    final field = jobFieldController.fields[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                JobsListPage(fieldId: field.id),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: boxSize,
+                        height: boxSize,
+                        decoration: BoxDecoration(
+                          color: ColorConstants.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              _getIconByName(field.icon),
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              field.name,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              field.title,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
                   },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const BoxDecoration(
-                          color: ColorConstants.primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          _getIconByName(field.icon),
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        field.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        field.title,
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
                 );
-              },
-            ),
+        },
+      ),
     );
   }
 

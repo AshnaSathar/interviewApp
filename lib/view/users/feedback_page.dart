@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/color_constants.dart';
+import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/controller/feedback_controller.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
         Provider.of<FeedbackController>(context, listen: false);
     await feedbackProvider.submitFeedback(_rating, _feedbackController.text);
 
-    // Show success popup
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -34,17 +35,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
       ),
     );
 
-    // Clear the fields after submission
     _feedbackController.clear();
     setState(() {
-      _rating = 3.0; // Reset rating to default
+      _rating = 3.0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Feedback")),
+      appBar: AppBar(
+          backgroundColor: ColorConstants.primaryColor,
+          title: const Text("Feedback")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -81,8 +83,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                        const Color.fromARGB(255, 1, 68, 4))),
                 onPressed: _submitFeedback,
-                child: const Text("Submit Feedback"),
+                child: Text(
+                  "Submit Feedback",
+                  style: TextStyles.h6.copyWith(color: Colors.white),
+                ),
               ),
             ),
           ],
