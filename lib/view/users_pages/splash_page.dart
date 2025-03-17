@@ -22,6 +22,8 @@ class _SplashPageState extends State<SplashPage> {
             height: height,
             width: width,
             color: Colors.white,
+            child: Image.asset(
+                "/Users/ashnasathar/interviewApp/flutter_application_1/assets/images/splash.jpg"),
           ),
           Positioned(
             bottom: 10,
