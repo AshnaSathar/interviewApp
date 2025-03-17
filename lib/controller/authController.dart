@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/users_pages/login_page.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthController with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -59,8 +60,8 @@ class AuthProvider with ChangeNotifier {
         'assignedAt': FieldValue.serverTimestamp(),
       });
 
-      // Step 5: Navigate to login page after successful registration
-      Navigator.pushReplacementNamed(context, '/login');
+      // Step 5: Show success dialog
+      showSuccessDialog(context);
     } catch (e) {
       showErrorDialog(context, "Error: ${e.toString()}");
     } finally {
@@ -74,12 +75,38 @@ class AuthProvider with ChangeNotifier {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Registration Failed"),
+          title: const Text("Registration Failed"),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("OK"),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Function to show a success dialog and navigate to login page
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing dialog by tapping outside
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Success"),
+          content: const Text("Registration successful!"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: const Text("OK"),
             ),
           ],
         );

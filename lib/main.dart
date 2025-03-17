@@ -17,6 +17,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import 'controller/authController.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
@@ -45,7 +47,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => VideoController()),
         ChangeNotifierProvider(create: (context) => ApplicationController()),
         ChangeNotifierProvider(create: (context) => FeedbackController()),
-        ChangeNotifierProvider(create: (context) => RegisterController()),
+        ChangeNotifierProvider(create: (context) => AuthController()),
+
+        // ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: const MyApp(),
     ),

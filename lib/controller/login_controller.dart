@@ -28,7 +28,7 @@ class LoginController {
       final userEmail = userCredential.user?.email ?? '';
 
       print("Firebase Initialized Successfully!");
-      print("Logged-in user email: $userEmail");
+      // print("Logged-in user email: $userEmail");
 
       final String? role = await getUserRole(userEmail);
 
@@ -38,7 +38,7 @@ class LoginController {
         return null;
       }
 
-      print("User role: $role");
+      // print("User role: $role");
       return role;
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message ?? "Login failed";
