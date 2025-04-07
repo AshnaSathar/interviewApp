@@ -43,7 +43,7 @@ class _UsersPageState extends State<UsersPage> {
                   ? user['email']
                   : 'N/A';
               String username = user.data().toString().contains('username')
-                  ? user['username']
+                  ? user['user_name']
                   : 'N/A';
               String role = user.data().toString().contains('role')
                   ? user['role']

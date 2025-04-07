@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/users/course_page.dart';
 import 'package:flutter_application_1/view/users/feedback_page.dart';
 import 'package:flutter_application_1/view/users/settings.dart';
 import 'package:flutter_application_1/view/users/vacancy_list_page.dart';
@@ -78,6 +79,16 @@ class CustomDrawer extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => VacancyList()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.book_online, color: Colors.black),
+                title:
+                    const Text("Course", style: TextStyle(color: Colors.black)),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CoursePage()));
                 },
               ),
               ListTile(

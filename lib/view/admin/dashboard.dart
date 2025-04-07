@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/textstyle_constants.dart';
+import 'package:flutter_application_1/view/admin/contents.dart';
 import 'package:flutter_application_1/view/admin/feedback_Admin.dart';
 import 'package:flutter_application_1/view/admin/fields.dart';
 import 'package:flutter_application_1/view/admin/jobsAdmin.dart';
@@ -22,6 +23,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final List<Map<String, dynamic>> menuItems = [
     {"title": "Users", "icon": Icons.person, "page": UsersPage()},
+    {"title": "Course", "icon": Icons.book, "page": ContentAdminPage()},
     {"title": "Fields", "icon": Icons.category, "page": FieldsPage()},
     {"title": "Jobs", "icon": Icons.work, "page": JobsPageAdmin()},
     {

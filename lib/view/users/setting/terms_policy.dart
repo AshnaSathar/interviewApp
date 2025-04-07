@@ -12,14 +12,11 @@ class TermsPolicy extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          bool isWideScreen =
-              constraints.maxWidth > 800; // Adjust for large screens
+          bool isWideScreen = constraints.maxWidth > 800;
 
           return Center(
             child: Container(
-              width: isWideScreen
-                  ? 700
-                  : double.infinity, // Limits width for large screens
+              width: isWideScreen ? 700 : double.infinity,
               padding: const EdgeInsets.all(16.0),
               child: Card(
                 shape: RoundedRectangleBorder(
@@ -48,13 +45,6 @@ class TermsPolicy extends StatelessWidget {
                         _buildSectionText(
                             "We reserve the right to update these terms at any time. Users will be notified of major changes."),
                         const SizedBox(height: 20),
-                        // Align(
-                        //   alignment: Alignment.center,
-                        //   child: ElevatedButton(
-                        //     onPressed: () => Navigator.pop(context),
-                        //     child: const Text("Accept & Continue"),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

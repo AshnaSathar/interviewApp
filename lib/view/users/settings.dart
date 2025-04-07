@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/color_constants.dart';
 import 'package:flutter_application_1/view/users/edit_profile_page.dart';
-import 'package:flutter_application_1/view/users/helps_and_support.dart';
 import 'package:flutter_application_1/view/users/language_Selection_page.dart';
-import 'package:flutter_application_1/view/users/refer_and_earn.dart';
-import 'package:flutter_application_1/view/users/terms_policy.dart';
+import 'package:flutter_application_1/view/users/setting/helps_and_support.dart';
+import 'package:flutter_application_1/view/users/setting/refer_and_earn.dart';
+import 'package:flutter_application_1/view/users/setting/terms_policy.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

@@ -5,8 +5,6 @@ import 'package:flutter_application_1/constants/textstyle_constants.dart';
 import 'package:flutter_application_1/controller/login_controller.dart';
 import 'package:flutter_application_1/view/users/custom_pages/email_verification.dart';
 import 'package:flutter_application_1/view/users/home_page.dart';
-import 'package:flutter_application_1/view/users/registration_page.dart';
-// import 'package:flutter_application_1/controllers/login_controller.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,19 +31,6 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            // Container(
-            //   height: height,
-            //   width: width,
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       transform: GradientRotation(1.5),
-            //       colors: [
-            //         ColorConstants.primaryColor,
-            //         ColorConstants.secondaryColor
-            //       ],
-            //     ),
-            //   ),
-            // ),
             Container(
               width: width,
               height: height,
