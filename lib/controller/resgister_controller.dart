@@ -19,7 +19,6 @@ class AuthProvider with ChangeNotifier {
     try {
       setLoading(true);
 
-      // Step 1: Check if email exists in Firebase Authentication
       List<String> signInMethods =
           await _auth.fetchSignInMethodsForEmail(email);
       if (signInMethods.isNotEmpty) {
@@ -28,7 +27,6 @@ class AuthProvider with ChangeNotifier {
         return;
       }
 
-      // Step 2: Check if email exists in Firestore user_roles collection
       var userRoleQuery = await _firestore
           .collection('user_roles')
           .where('email', isEqualTo: email)
@@ -40,14 +38,12 @@ class AuthProvider with ChangeNotifier {
         return;
       }
 
-      // Step 3: If email doesn't exist, proceed with registration
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Step 4: Save user data in Firestore with role "user"
       await _firestore
           .collection('user_roles')
           .doc(userCredential.user!.uid)
@@ -55,11 +51,10 @@ class AuthProvider with ChangeNotifier {
         'userId': userCredential.user!.uid,
         'user_name': userName,
         'email': email,
-        'role': 'user', // Assign default role
+        'role': 'user',
         'assignedAt': FieldValue.serverTimestamp(),
       });
 
-      // Step 5: Navigate to login page after successful registration
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       showErrorDialog(context, "Error: ${e.toString()}");
@@ -68,7 +63,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Function to show an error dialog
   void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
