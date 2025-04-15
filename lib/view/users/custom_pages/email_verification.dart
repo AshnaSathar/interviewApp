@@ -38,7 +38,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             children: [
               SizedBox(height: 10),
-              // Profile Image
               Container(
                 height: size.height * 0.3,
                 width: size.width,
@@ -119,7 +118,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Show SnackBar for errors
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -129,13 +127,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Email validation
   bool _isValidEmail(String email) {
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
     return emailRegex.hasMatch(email);
   }
 
-  // Custom TextField Widget
   Widget _buildTextField(
     TextEditingController controller,
     String label,
@@ -158,7 +154,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Custom Password Field with Toggle Visibility
   Widget _buildPasswordField(
     TextEditingController controller,
     String label, {

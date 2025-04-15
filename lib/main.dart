@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/application_controller.dart';
+import 'package:flutter_application_1/controller/course_controller.dart';
 import 'package:flutter_application_1/controller/course_provider.dart';
 import 'package:flutter_application_1/controller/feedback_controller.dart';
 import 'package:flutter_application_1/controller/job_application_controller.dart';
@@ -42,6 +43,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => JobApplicationProvider()),
+        ChangeNotifierProvider(create: (context) => MyCourseController()),
         ChangeNotifierProvider(create: (context) => QuestionController()),
         ChangeNotifierProvider(create: (context) => JobFieldController()),
         ChangeNotifierProvider(create: (context) => VacancyController()),
@@ -50,8 +52,6 @@ void main() async {
         ChangeNotifierProvider(create: (context) => FeedbackController()),
         ChangeNotifierProvider(create: (context) => AuthController()),
         ChangeNotifierProvider(create: (context) => CourseProvider()),
-
-        // ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: const MyApp(),
     ),
